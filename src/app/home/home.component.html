@@ -1,0 +1,83 @@
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <form (ngSubmit)="onSubmit()" #f="ngForm">
+                    <div class="form-group">
+                        <label for="state">Select State:</label>
+                        <select name="state" id="state" class="form-control" ngModel (change)="onStateChange()"
+                            required>
+                            <option *ngFor="let state of states" [value]="state.state_id">{{state.state_name}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dists">Select District:</label>
+                        <select name="dists" id="dists" class="form-control" ngModel #district="ngModel" required>
+                            <option *ngFor="let dist of districts" [value]="dist.district_id">
+                                {{dist.district_name}}
+                            </option>
+                        </select>
+                        <br>
+                        <p class="alert alert-warning" *ngIf="!district.valid && district.touched">Please select a
+                            district
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" id="date" name="date" class="form-control" ngModel>
+                        <br>
+                        <p class="alert alert-warning" *ngIf="error">{{error}}</p>
+                    </div>
+                    <button class="btn btn-primary" [disabled]="!f.valid">Show Available Slots</button>
+                    <a href="https://selfregistration.cowin.gov.in/" target="_blank" class="btn btn-primary">Book your
+                        slots!
+                    </a>
+                    <button class="btn btn-primary" (click)="onReset()">Reset Form</button>
+                    <hr *ngIf="!isSlotAvailable">
+                    <div *ngIf="showFilter" class="form-group">
+                        <input type="text" class="form-control" name="filter" [(ngModel)]="filteredString"
+                            placeholder="Filter Results">
+                    </div>
+                </form>
+
+                <p *ngIf="!isSlotAvailable">No slots available for selected date</p>
+                <ul class="list-group" *ngFor="let info of infos | filter:filteredString">
+                    <li class="list-group-item" style="cursor: pointer;"
+                        style="background-color:#49274A;color:#F4DECB ;" *ngIf="info.available_capacity!=0">
+                        <div>
+                            <h3><i><strong>{{info.name}}</strong></i></h3>
+                            <small>{{info.address}}</small>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-2 col-md">
+                                    <small>Available capacity: </small> {{info.available_capacity}}
+                                </div>
+                                <div class="col-lg-2 col-md">
+                                    <small>Minimum age limt: </small> {{info.min_age_limit}}
+                                </div>
+                                <div class="col-lg-2 col-md">
+                                    <small>Vaccine: </small>{{info.vaccine}}
+                                </div>
+                                <div class="col-lg-2 col-md">
+                                    <small>Fee Type: </small>{{info.fee_type}}
+                                </div>
+                                <div class="col-lg-2 col-md">
+                                    <small>Fee: </small>{{info.fee}}
+                                </div>
+                            </div>
+                            <hr>
+                            <ul class="list-group">
+                                <p><strong> Available slots</strong></p>
+                                <li class="list-group-item list-group-item-info" *ngFor="let slot of info.slots"
+                                    style="background-color:#F4DECB;color:#49274A ;">
+                                    {{slot}}
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <hr>
+            </div>
+        </div>
+    </div>
+</body>

@@ -1,0 +1,13 @@
+.container{
+    width:70vw;
+    margin-top: 20px;
+}
+body{
+    background-color: #F4DECB;
+    color: #49274A;
+}
+.btn,.btn:hover{
+    background-color: #49274A;
+    border-radius: 30px;
+    margin: 10px;
+}
